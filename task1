@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+struct Graph {
+    map<char, vector<pair<char, int>>> adjList;
+    void add_vertex(char v) {
+        if (adjList.find(v) == adjList.end()) {
+            adjList[v] = vector<pair<char, int>>();
+        }
+    }
+    void add_edge(char u, char v, int weight) {
+        add_vertex(u);
+        add_vertex(v);
+        adjList[u].push_back({v, weight});
+        adjList[v].push_back({u, weight});
+    }
+    void print_adj_list() {
+        cout << "=== Task 1: Adjacency List ===" << endl;
+        for (auto const& [vertex, edges] : adjList) {
+            cout << vertex << ": ";
+            for (auto const& edge : edges) {
+                cout << "(" << edge.first << ", weight: " << edge.second << ") ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+};
+int main() {
+    Graph g;
+    // Данные из задания
+    g.add_edge('B', 'A', 4);
+    g.add_edge('C', 'A', 6);
+    g.add_edge('D', 'B', 5);
+    g.add_edge('E', 'B', 1);
+    g.add_edge('F', 'D', 13);
+    g.add_edge('G', 'E', 9);
+    g.add_edge('F', 'A', 7);
+
+    g.print_adj_list();
+
+    return 0;
+}
