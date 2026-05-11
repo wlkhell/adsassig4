@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <queue>
+using namespace std;
+struct Graph {
+    map<char, vector<pair<char, int>>> adjList;
+    void add_edge(char u, char v, int weight) {
+        adjList[u].push_back({v, weight});
+        adjList[v].push_back({u, weight});
+    }
+    void DFS_util(char v, map<char, bool>& visited) {
+        visited[v] = true;
+        cout << v << " ";
+        for (auto const& edge : adjList[v]) {
+            if (!visited[edge.first]) DFS_util(edge.first, visited);
+        }
+    }
+    void run_DFS(char start) {
+        cout << "DFS Traversal order: ";
+        map<char, bool> visited;
+        DFS_util(start, visited);
+        cout << endl;
+    }
+    void run_BFS(char start) {
+        cout << "BFS Traversal order: ";
+        map<char, bool> visited;
+        queue<char> q;
+        visited[start] = true;
+        q.push(start);
+
+        while (!q.empty()) {
+            char curr = q.front();
+            q.pop();
+            cout << curr << " ";
+            for (auto const& edge : adjList[curr]) {
+                if (!visited[edge.first]) {
+                    visited[edge.first] = true;
+                    q.push(edge.first);
+                }
+            }
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Graph g;
+    g.add_edge('B', 'A', 4); g.add_edge('C', 'A', 6);
+    g.add_edge('D', 'B', 5); g.add_edge('E', 'B', 1);
+    g.add_edge('F', 'D', 13); g.add_edge('G', 'E', 9);
+    g.add_edge('F', 'A', 7);
+
+    cout << "--- TASK 2: TRAVERSAL (Start: E) ---" << endl;
+    g.run_DFS('E');
+    g.run_BFS('E');
+    return 0;
+}
